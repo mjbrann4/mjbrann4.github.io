@@ -1,0 +1,97 @@
+/****************/
+/* Line Graph */
+/***************/
+.title-text {
+  font-size: 14px;
+  fill: black;
+  text-anchor: middle;
+}
+
+.line-title {
+  font-size: 14px;
+  fill: rgb(255, 255, 255);
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: black;
+  /*stroke: #fff;*/
+}
+
+.axis-text, .axis text {
+  font-size: 12px;
+  fill: black;
+  text-anchor: middle;
+}
+
+.line {
+  fill: none;
+  stroke-width: 5px;
+  stroke: url(#line-gradient);
+}
+
+/*.state-border {
+    fill: none;
+    stroke: #333;
+}
+
+.county-border {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.01px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+svg {
+    font: 10px sans-serif;
+}
+
+.key path {
+    display: none;
+}
+
+.key line {
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+*/
+/*********************/
+/*  TOOLTIP OVERLAY  */
+/*********************/
+
+.tooltip-title {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.d3-tip {
+  line-height: 1;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip 
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}*/
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}

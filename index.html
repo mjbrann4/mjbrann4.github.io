@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Template</title>
+    <link rel="stylesheet" href="content/bootstrap.min.css">
+    <link rel="stylesheet" href="content/style.css">
+</head>
+	
+<body>
+
+	<!-- ********************** ADD YOUR HTML-ELEMENTS HERE *********************** -->	
+
+	<h1>MN Solar Farms</h1>
+	
+
+    <!-- Parent container for the graphics -->
+
+
+	<div id="graphic-container">
+    	<a name="anchor"></a>
+
+    	<div class="col-md-6" id="map-area"> </div>
+        <div class="col-md-6" id="line-graph-area"> </div>
+	</div>
+
+	<!-- Load JS libraries: jQuery, bootstrap, D3, D3 Tooltips -->
+	<script>var myApp = {};</script>
+	<script src="external/angular.min.js"></script>
+	<script src="external/jquery.min.js"></script>
+	<script src="external/bootstrap.min.js"></script>
+    <script src="external/queue.min.js"></script>    
+	<script src="external/d3.min.js"></script>
+    <script src="external/d3.tip.js"></script>
+    <script src="external/colorbrewer.js"></script>
+
+	<script src="src/main.js"></script>
+	<script src="src/helper_methods.js"></script>
+	<script src="src/choropleth.js"></script>
+	<script src="src/lineGraph.js"></script>
+	</body>
+</html>
