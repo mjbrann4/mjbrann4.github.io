@@ -31,7 +31,7 @@ myApp.LineGraph.prototype.initVis = function(){
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
     // X and Y Scales
-    vis.x = d3.time.scale()
+    vis.x = d3.scale.linear()
         .range([0, vis.width]);
 
     vis.y = d3.scale.linear()
