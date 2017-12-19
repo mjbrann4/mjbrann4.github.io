@@ -19,10 +19,9 @@ myApp.loadData = function() {
             // Convert numeric values to 'numbers'
             mnData.forEach(function(d){
 
-                // Convert string to 'date object'
-                d.hh_mail_decile        = +d.hh_mail_decile;
-                d.stat        = +d.stat;
-                //d.num_deaths = +d.num_deaths.replace(/\,/g,'') 
+                d.group_value   = +d.group_value;
+                d.stat          = +d.stat;
+                d.farm_flag     = +d.farm_flag;
             });            
 
             //Pass in processed data here

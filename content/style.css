@@ -32,6 +32,10 @@
   stroke: url(#line-gradient);
 }
 
+.bar {
+  fill: steelblue;
+}
+
 /*.state-border {
     fill: none;
     stroke: #333;

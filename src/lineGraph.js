@@ -15,7 +15,7 @@ myApp.LineGraph = function(_parentElement, _data, _chartID){
 myApp.LineGraph.prototype.initVis = function(){
     var vis = this;
 
-    vis.margin = {top: 100, right: 50, bottom: 50, left: 100};
+    vis.margin = {top: 50, right: 50, bottom: 50, left: 100};
 
     vis.width = 600 - vis.margin.left - vis.margin.right;
 
@@ -107,15 +107,15 @@ myApp.LineGraph.prototype.wrangleData = function(){
     console.log(vis.countyData)
 
     //Scale domains
-    vis.x.domain([d3.min(vis.countyData, function(d) { return d.hh_mail_decile;}),
-             d3.max(vis.countyData, function(d) { return d.hh_mail_decile;})])
+    vis.x.domain([d3.min(vis.countyData, function(d) { return d.group_value;}),
+             d3.max(vis.countyData, function(d) { return d.group_value;})])
 
     vis.y.domain([d3.min(vis.countyData, function(d) { return d.stat;})-5,
              d3.max(vis.countyData, function(d) { return d.stat;})+5])
 
     //Line functions
     vis.line = d3.svg.line()
-        .x(function(d) { return vis.x(d.hh_mail_decile); })
+        .x(function(d) { return vis.x(d.group_value); })
         .y(function(d) { return vis.y(d.stat); })
         .interpolate("monotone");  
 
@@ -151,7 +151,7 @@ myApp.LineGraph.prototype.wrangleData = function(){
         .attr("stroke-dasharray", totalLength + " " + totalLength)
         .attr("stroke-dashoffset", totalLength)
         .transition()
-            .duration(2000)
+            .duration(1000)
             .ease("linear")
             .attr("stroke-dashoffset", 0);
 
@@ -163,7 +163,7 @@ myApp.LineGraph.prototype.wrangleData = function(){
         .append('text')
         .attr("class", "title-text")
         .attr("transform", "translate(" + (vis.width/2) + "," + (-10) + ")")
-        .text(function(d) {return "Solar Farm:  " + d.farm_name;})
+        .text(function(d) {return "County:  " + d.county_fips;})
         .style("opacity", 0)
         .transition().duration(750).style("opacity", 1);
 

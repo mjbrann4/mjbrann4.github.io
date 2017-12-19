@@ -30,17 +30,19 @@ myApp.Choropleth.prototype.initVis = function(){
         .attr("transform", "translate(100,100)");
 
     //Set colorscale # of buckets
-    vis.colorBuckets = 7;
+    vis.colorBuckets = 4;
 
     //Set colorscale range
-    vis.colorScale = d3.scale.quantize()
-        .range(colorbrewer.BuGn[vis.colorBuckets]);
-        //.range(colorbrewer.Reds[vis.colorBuckets]);
+    vis.colorScale1 = d3.scale.quantize()
+        .range(colorbrewer.Greens[vis.colorBuckets]);
+
+    vis.colorScale2 = d3.scale.quantize()
+        .range(colorbrewer.Purples[vis.colorBuckets]);
 
     //Define map projection
     vis.projection = d3.geo.albersUsa()
-        .translate([150, 600])
-        .scale([3500]);
+        .translate([100, 650])
+        .scale([4000]);
 
     //Define default path generator
     vis.path = d3.geo.path()
@@ -57,7 +59,7 @@ myApp.Choropleth.prototype.wrangleData = function(){
     var vis = this;
 
     vis.filteredData = vis.mnData.filter(function (value) {
-        return (value.hh_mail_decile == -99);
+        return (value.group_label === 'all');
     });
 
     console.log(vis.filteredData)
@@ -76,7 +78,8 @@ myApp.Choropleth.prototype.wrangleData = function(){
 
     //color domain
     var domainExtent = d3.extent(d3.values(vis.filteredData), function(d) { return d.stat; });
-    vis.colorScale.domain(domainExtent);
+    vis.colorScale1.domain(domainExtent);
+    vis.colorScale2.domain(domainExtent);
 
     //Initialize tooltip for Map
     var tip = d3.tip()
@@ -99,7 +102,7 @@ myApp.Choropleth.prototype.wrangleData = function(){
         if(entity) {
             d.values = entity;
         } else {
-            d.values = {farm_name: 'NONE', hh_mail_decile: -99, stat: 0};
+            d.values = {group_label: 'NA', farm_name: 'NA', group_value: -99, stat: 0, farm_flag: -1};
         }
     });
 
@@ -111,15 +114,35 @@ myApp.Choropleth.prototype.wrangleData = function(){
         .attr("class", "counties")
         .attr("d", vis.path)
         .attr("fill", function(d) { 
-            if (d.values.farm_name === "NONE") {
-                return '#C0C0C0'
+            if (d.values.farm_flag === -1) {
+                // grey
+                return "#C0C0C0"
+            } else if (d.values.farm_flag === 0) {
+                //return '#e5f5f9'
+                return vis.colorScale1(d.values.stat);
             }
             else {
-                return vis.colorScale(d.values.stat);
+                //return '#238b45'
+                return vis.colorScale1(d.values.stat);
             }
         })
-        .style("stroke", "grey")
-        .style("stroke-width", ".5")
+        //.style("stroke", "grey")
+        .style("stroke", function(d) {
+            if (d.values.farm_flag === 1) {
+                return "steelblue"
+            }
+            else {
+                return "grey"
+            }
+        })
+        .style("stroke-width", function(d) {
+            if (d.values.farm_flag === 1) {
+                return "2.5"
+            }
+            else {
+                return "0.5"
+            }            
+        })
         .style("cursor", "pointer")
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
@@ -136,19 +159,26 @@ myApp.Choropleth.prototype.wrangleData = function(){
     //filter fulldata to this state only
     var thisCounty = d.properties.COUNTY;
     console.log(thisCounty)
-    vis.countyData = vis.mnData.filter(function (value) {
-        return (value.county_fips == thisCounty & value.hh_mail_decile != -99);
+
+    vis.decileData = vis.mnData.filter(function (value) {
+        return (value.county_fips == thisCounty & value.group_label === "decile");
     });
-    //console.log(vis.countyData);
+
+    vis.barData = vis.mnData.filter(function (value) {
+        return (value.county_fips == thisCounty & value.group_label === "homeowner");
+    });
+
+    console.log(vis.decileData);
+    console.log(vis.barData);
 
     //build new chart
     setTimeout(function() {
-        var lineGraph = new myApp.LineGraph("line-graph-area", vis.countyData, count);
-        //var lineGraph = new myApp.LineGraph("line-graph-area", vis.countyData, count);
+        var lineGraph = new myApp.LineGraph("line-graph-area", vis.decileData, count);
+        var barGraph = new myApp.BarGraph("bar-graph-area", vis.barData, count);
     }, 50)
 
     //remove existing chart
-    myApp.removeGraph(vis.countyData);
+    myApp.removeGraph(vis.decileData);
 }
 
 
