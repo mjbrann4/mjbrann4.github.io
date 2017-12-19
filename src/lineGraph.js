@@ -19,7 +19,7 @@ myApp.LineGraph.prototype.initVis = function(){
 
     vis.width = 600 - vis.margin.left - vis.margin.right;
 
-    vis.height = 400 - vis.margin.top - vis.margin.bottom;
+    vis.height = 300 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select("#line-graph-area").append("svg")
         .attr("id", "a" + vis.chartID)
