@@ -110,7 +110,10 @@ myApp.LineGraph.prototype.wrangleData = function(){
     vis.x.domain([d3.min(vis.countyData, function(d) { return d.group_value;}),
              d3.max(vis.countyData, function(d) { return d.group_value;})])
 
-    vis.y.domain([d3.min(vis.countyData, function(d) { return d.stat;})-5,
+    //vis.y.domain([d3.min(vis.countyData, function(d) { return d.stat;})-5,
+             //d3.max(vis.countyData, function(d) { return d.stat;})+5])    
+
+    vis.y.domain([0,
              d3.max(vis.countyData, function(d) { return d.stat;})+5])
 
     //Line functions
