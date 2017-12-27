@@ -1,6 +1,7 @@
-myApp.LineGraph = function(_parentElement, _data, _chartID){
+myApp.LineGraph = function(_parentElement, _data, _countyName, _chartID){
   this.parentElement = _parentElement;
   this.countyData = _data;
+  this.countyName = _countyName;
   this.chartID = _chartID;
 
   //console.log(this.countyData)
@@ -104,7 +105,7 @@ myApp.LineGraph.prototype.wrangleData = function(){
  myApp.LineGraph.prototype.updateVis = function() {
     var vis = this;
 
-    console.log(vis.countyData)
+    //console.log(vis.countyData)
 
     //Scale domains
     vis.x.domain([d3.min(vis.countyData, function(d) { return d.group_value;}),
@@ -158,18 +159,16 @@ myApp.LineGraph.prototype.wrangleData = function(){
             .ease("linear")
             .attr("stroke-dashoffset", 0);
 
-
     //Farm Name label
     var text = vis.g.selectAll("title-text.text")
-        .data(vis.countyData)
+        .data(vis.countyName)
         .enter()
         .append('text')
         .attr("class", "title-text")
         .attr("transform", "translate(" + (vis.width/2) + "," + (-10) + ")")
-        .text(function(d) {return "County:  " + d.county_fips;})
+        .text(function(d) {return "Decile Score in  " + d + " County";})
         .style("opacity", 0)
         .transition().duration(750).style("opacity", 1);
-
 
     //Update X axis
     vis.svg.select(".x-axis")

@@ -160,6 +160,9 @@ myApp.Choropleth.prototype.wrangleData = function(){
     var thisCounty = d.properties.COUNTY;
     console.log(thisCounty)
 
+    var countyName = [d.properties.NAME]
+    console.log(countyName)
+
     vis.decileData = vis.mnData.filter(function (value) {
         return (value.county_fips == thisCounty & value.group_label === "decile");
     });
@@ -173,7 +176,7 @@ myApp.Choropleth.prototype.wrangleData = function(){
 
     //build new chart
     setTimeout(function() {
-        var lineGraph = new myApp.LineGraph("line-graph-area", vis.decileData, count);
+        var lineGraph = new myApp.LineGraph("line-graph-area", vis.decileData, countyName, count);
         var barGraph = new myApp.BarGraph("bar-graph-area", vis.barData, count);
     }, 50)
 

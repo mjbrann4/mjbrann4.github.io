@@ -33,7 +33,7 @@ df['farm_name'] = df['county_fips'].map({27121: 'Bartlett',
                                         27163: 'Mchattie'})
 
 df['farm_name'] = df['farm_name'].fillna('NA')
-
+ 
 #clean up 
 #--------------------------
 
