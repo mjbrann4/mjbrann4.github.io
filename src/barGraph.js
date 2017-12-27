@@ -1,12 +1,14 @@
-myApp.BarGraph = function(_parentElement, _data, _chartID){
+myApp.BarGraph = function(_parentElement, _data, _countyName, _chartID){
   this.parentElement = _parentElement;
   this.barData = _data;
+  this.countyName = _countyName;
   this.chartID = _chartID;
 
-  //console.log(this.barData)
+  //console.log(this.countyData)
 
   this.initVis();
 }
+
 
 /*=================================================================
 * Initialize visualization (static content, e.g. SVG area or axes)
@@ -76,14 +78,6 @@ myApp.BarGraph.prototype.initVis = function(){
         .style("opacity", 0)
         .transition().duration(750).style("opacity", 1);
 
-    //Farm Name label
-    vis.g.append('text')
-        .attr("class", "title-text")
-        .attr("transform", "translate(" + (vis.width/2) + "," + (-10) + ")")
-        .text("Number of Homeowners")
-        .style("opacity", 0)
-        .transition().duration(750).style("opacity", 1);
-
     // TO-DO: (Filter, aggregate, modify data)
     vis.wrangleData();
 }
@@ -109,11 +103,24 @@ myApp.BarGraph.prototype.wrangleData = function(){
  myApp.BarGraph.prototype.updateVis = function() {
     var vis = this;
 
-    console.log(vis.barData)
+    //console.log(vis.barData)
 
     //Scale domains
     vis.x.domain(vis.barData.map(function(d) { return d.group_value; }));
     vis.y.domain([0, d3.max(vis.barData, function(d) { return d.stat; })]);
+
+    //Initialize tooltip for Map
+    var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .style("text-align", "center");
+
+    vis.g.call(tip);
+
+    //add tip function
+    tip.html(function (d) {
+        return "Count: " + d.stat
+    });
 
     var bars = vis.g.selectAll("bar")
         .data(vis.barData)
@@ -123,8 +130,21 @@ myApp.BarGraph.prototype.wrangleData = function(){
         .attr("x", function(d) { return vis.x(d.group_value); })
         .attr("width", vis.x.rangeBand())
         .attr("y", function(d) { return vis.y(d.stat); })
-        .attr("height", function(d) { return vis.height - vis.y(d.stat); });
+        .attr("height", function(d) { return vis.height - vis.y(d.stat); })
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide);
 
+
+    //County Name label
+    var text = vis.g.selectAll("title-text.text")
+        .data(vis.countyName)
+        .enter()
+        .append('text')
+        .attr("class", "title-text")
+        .attr("transform", "translate(" + (vis.width/2) + "," + (-10) + ")")
+        .text(function(d) {return "Number of Homeowners in  " + d + " County";})
+        .style("opacity", 0)
+        .transition().duration(750).style("opacity", 1);
 
     //Update X axis
     vis.svg.select(".x-axis")

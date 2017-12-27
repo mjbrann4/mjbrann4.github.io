@@ -36,6 +36,11 @@
   fill: steelblue;
 }
 
+.legend {
+  font-size: 12px;
+  fill: black;
+}
+
 /*.state-border {
     fill: none;
     stroke: #333;
